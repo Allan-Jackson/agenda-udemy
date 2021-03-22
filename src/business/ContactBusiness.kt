@@ -25,4 +25,7 @@ class ContactBusiness {
     fun getContactList(): List<ContactEntity>{
         return ContactRepository.getContactList()
     }
+    fun getContactCount(): Int{
+        return getContactList().size;
+    }
 }

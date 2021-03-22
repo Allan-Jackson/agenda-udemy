@@ -6,6 +6,7 @@ import business.ContactBusiness;
 import entity.ContactEntity;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +19,7 @@ public class MainForm extends JFrame{
     private JButton buttonNewContact;
     private JButton buttonRemove;
     private JTable tableContacts;
+    private JLabel labelContactCounter;
 
     private ContactBusiness mContactBusiness; //esse 'm' na frente é uma convenção para variáveis criadas pelo
     //programador, diferente dessas acima que foram geradas pelo 'form'
@@ -44,6 +46,19 @@ public class MainForm extends JFrame{
     }
     private void loadContacts(){
         List<ContactEntity> contactList = mContactBusiness.getContactList();
+        String[] columnNames = {"nome", "telefone"}; //criando um array de String
+        DefaultTableModel model = new DefaultTableModel(new Object[0][0], columnNames);
+
+        for(ContactEntity contact : contactList){ //for necessário para adicionar todos os contatos como linhas da tabela
+            Object[] o = new Object[2]; //cria um array de objeto de tamanho 2 para ser uma linha da tabela
+            o[0] = contact.getName(); //faz a primeira posição receber o nome do contato
+            o[1] = contact.getPhone(); //faz a segunda posição receber o telefone do contato
+            model.addRow(o); //adiciona uma linha na tabela, passando o nosso array que contém o nome e o telefone, cada valor será associado a uma coluna
+        }
+        tableContacts.setModel(model); //faz a tabela receber o model com os valores inseridos
+
+        int contactCount = mContactBusiness.getContactCount();
+        labelContactCounter.setText(contactCount + " " + (contactCount == 1 || contactCount == 0 ?"contato" : "contatos"));
     }
     private void setListeners(){
        buttonNewContact.addActionListener(new ActionListener() {
