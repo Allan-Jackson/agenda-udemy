@@ -1,11 +1,18 @@
-package business //um padrão para nome de pacote que vai conter as regras de negócio
+package business
+
+import entity.ContactEntity
+import repository.ContactRepository
+
+//um padrão para nome de pacote que vai conter as regras de negócio
 
 class ContactBusiness {
     fun save(name: String, phone: String){
         if(!validate(name,phone)) throw
-        IllegalArgumentException("Nome e telefone são obrigatórios.")
+        IllegalArgumentException("Nome e telefone são obrigatórios.") //faz parte do if, está apenas com quebra de linha
+        var contact = ContactEntity(name, phone)
+        ContactRepository.save(contact) //salva o contato no "banco"
     }
-    fun validate(name: String, phone: String): Boolean{
+    private fun validate(name: String, phone: String): Boolean{ //privada pois a camada business é quem valida
         if(name == "" || phone == ""){
             return false
         }
@@ -14,5 +21,8 @@ class ContactBusiness {
     fun delete(name: String, phone: String){
         if(!validate(name,phone)) throw
         IllegalArgumentException("É necessário selecionar um contato para remover.")
+    }
+    fun getContactList(): List<ContactEntity>{
+        return ContactRepository.getContactList()
     }
 }

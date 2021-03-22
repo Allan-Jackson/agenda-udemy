@@ -1,5 +1,10 @@
 package ui;
 
+import java.util.List;
+
+import business.ContactBusiness;
+import entity.ContactEntity;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,6 +18,9 @@ public class MainForm extends JFrame{
     private JButton buttonNewContact;
     private JButton buttonRemove;
     private JTable tableContacts;
+
+    private ContactBusiness mContactBusiness; //esse 'm' na frente é uma convenção para variáveis criadas pelo
+    //programador, diferente dessas acima que foram geradas pelo 'form'
 
 
     //construtor da classe para criar a interface e deixá-la visível quando a classe for instanciada
@@ -28,7 +36,14 @@ public class MainForm extends JFrame{
         setLocation(meioDaTela);
         //seta a operação que deve ser performada quando o frame for fechado
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        mContactBusiness = new ContactBusiness();
+
         setListeners();
+        loadContacts();
+    }
+    private void loadContacts(){
+        List<ContactEntity> contactList = mContactBusiness.getContactList();
     }
     private void setListeners(){
        buttonNewContact.addActionListener(new ActionListener() {
