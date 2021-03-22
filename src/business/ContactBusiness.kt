@@ -21,6 +21,8 @@ class ContactBusiness {
     fun delete(name: String, phone: String){
         if(!validate(name,phone)) throw
         IllegalArgumentException("É necessário selecionar um contato para remover.")
+        var contact = ContactEntity(name, phone)
+        ContactRepository.delete(contact)
     }
     fun getContactList(): List<ContactEntity>{
         return ContactRepository.getContactList()
